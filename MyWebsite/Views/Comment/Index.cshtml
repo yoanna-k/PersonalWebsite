@@ -1,0 +1,62 @@
+﻿@model IEnumerable<MyWebsite.Models.Comment>
+
+@using System.Security.Claims
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="orderby">
+    <label for="sortOrder">Sort by:</label>
+    <select id="sortOrder" onchange="sortComments(this.value)">
+        <option value=""></option>
+        <option value="name" selected="@((string)ViewData["NameSortParam"] == "name")">Name(a-z)</option>
+        <option value="date" selected="@((string)ViewData["DateSortParam"] == "date")">Older</option>
+        <option value="name_desc" selected="@((string)ViewData["NameSortParam"] == "name_desc")">Name(z-a)</option>
+        <option value="date_desc" selected="@((string)ViewData["DateSortParam"] == "date_desc")">Newer</option>
+    </select>
+</div>
+
+
+@foreach (var item in Model)
+{
+		<div class="comment-container">
+			<div class="comment-body">
+				<p>
+				@Html.DisplayFor(modelItem => item.CommentText)
+				</p>
+			</div>
+                <div class="comment_toolbar">
+				<div class="comment_details">
+					<ul>
+					<li><i class="fa fa-clock-o"></i> @Html.DisplayFor(modelItem => item.Posted) </li>
+                    <li><i class="fa fa-user-circle" aria-hidden="true"></i>
+                        <span class="user">@Html.DisplayFor(modelItem => item.Name)</span></li>
+                    @if (User.Identity.IsAuthenticated && item.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+                    {
+
+                        <li><a asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-pencil"></i></a></li>
+                        <li><a asp-action="Delete" asp-route-id="@item.Id"><i class="fa fa-trash-o" aria-hidden="true"></i></a></li>
+                    }
+					</ul>
+				</div>
+			</div>
+		</div>
+}
+
+
+<div>
+    <form asp-action="Create" method="post">
+        <div>
+            <textarea class="form-control" name="commentText"></textarea>
+        </div>
+        <div>
+            <button type="submit" class="add-comment">Comment</button>
+        </div>
+    </form>
+</div>
+
+
+
+

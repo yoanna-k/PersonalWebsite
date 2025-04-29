@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Textbook";
+}
+
+<div class="pdf-container">
+<div class="pdf-textbook">
+    <a href="@Url.Content("~/download/textbook.pdf")">View PDF</a>
+    <a href="@Url.Content("~/download/textbook.pdf")" download="textbook.pdf">Download PDF</a>
+    <iframe src="@Url.Content("~/download/textbook.pdf")"></iframe>
+</div>
+</div>
+
+
+
+
